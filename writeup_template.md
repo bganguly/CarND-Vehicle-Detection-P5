@@ -26,9 +26,7 @@ The goals / steps of this project are the following:
 [image9]: ./output_for_readme/bounding_boxes_test5.jpg "bounding boxes test_images/test5.jpg"
 [image10]: ./output_for_readme/bounding_boxes_test6.jpg "bounding boxes test_images/test6.jpg"
 
-[image6]: ./output_for_readme/processed_sobelmag_sobeldir_image.jpg "sobelmag and sobeldir outputs"
-[image7]: ./output_for_readme/sample_lane_line_pixels.jpg "sample_lane_line_pixels"
-[image8]: ./output_for_readme/processed_Frames_frame0006.jpg "frame006"
+
 [video1]: ./project_video.mp4 "Video"
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
