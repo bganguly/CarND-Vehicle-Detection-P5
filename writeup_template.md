@@ -25,6 +25,20 @@ The goals / steps of this project are the following:
 [image8]: ./output_for_readme/bounding_boxes_test4.jpg "bounding boxes test_images/test4.jpg"
 [image9]: ./output_for_readme/bounding_boxes_test5.jpg "bounding boxes test_images/test5.jpg"
 [image10]: ./output_for_readme/bounding_boxes_test6.jpg "bounding boxes test_images/test6.jpg"
+[image11]: ./output_for_readme/single_img_label_test6.jpg "single img labels test_images/test6.jpg"
+[image12]: ./output_for_readme/single_img_heatmapped_test6.jpg "single img heatmap test_images/test6.jpg"
+[image13]: ./output_for_readme/img_detection_test1.jpg "img detection test_images/test1.jpg"
+[image14]: ./output_for_readme/img_detection_test2.jpg "img detection test_images/test2.jpg"
+[image15]: ./output_for_readme/img_detection_test3.jpg "img detection test_images/test3.jpg"
+[image16]: ./output_for_readme/img_detection_test4.jpg "img detection test_images/test4.jpg"
+[image17]: ./output_for_readme/img_detection_test5.jpg "img detection test_images/test5.jpg"
+[image18]: ./output_for_readme/img_detection_test6.jpg "img detection test_images/test6.jpg"
+[image19]: ./output_for_readme/resulting_bounding_box_test1.jpg "resulting bounds test_images/test1.jpg"
+[image20]: ./output_for_readme/resulting_bounding_box_test2.jpg "resulting bounds test_images/test2.jpg"
+[image21]: ./output_for_readme/resulting_bounding_box_test3.jpg "resulting bounds test_images/test3.jpg"
+[image22]: ./output_for_readme/resulting_bounding_box_test4.jpg "resulting bounds test_images/test4.jpg"
+[image23]: ./output_for_readme/resulting_bounding_box_test5.jpg "resulting bounds test_images/test5.jpg"
+[image24]: ./output_for_readme/resulting_bounding_box_test6.jpg "resulting bounds test_images/test6.jpg"
 
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/513/view) Points
@@ -90,30 +104,37 @@ Here's a [link to my video result](./movie.mov)
 Here's the corresponding youtube link - https://youtu.be/axs4TrsXmuE   
 Normally this would have been an mp4 file. However i found that running the 1261 or so frames of the video on an AWS gpu instance takes upwards of 2 hour 30 minutes or so. So i use VideoClip.subclip() to split into two clips of roughly equl size and run two jupyter notebooks in parallel. This eventually did not have much benefit as the single notebook normally took about 7.3 seconds to process each frame, and with two notebooks running, the time for each shot upto about 13.3 seconds. There was perhaps a sving of 20 minutes or so. More importanlty when the two processed mp4 subclips were downloaed to local mac, and then joined together using quicktime, the resulting video can only be saved as .mov file.
 
-
 ####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
+
+The code for this step is contained in the code cells 16 through 18 of the  notebook.
 
 I recorded the positions of positive detections in each frame of the video.  From the positive detections I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected.  
 
-Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
+Here's an example result showing the heatmap from test_images/test6.jpg:
+![alt text][image11]  
+![alt text][image12]  
+
 
 ### Here are six frames and their corresponding heatmaps:
-
-![alt text][image5]
-
-### Here is the output of `scipy.ndimage.measurements.label()` on the integrated heatmap from all six frames:
-![alt text][image6]
-
-### Here the resulting bounding boxes are drawn onto the last frame in the series:
-![alt text][image7]
+![alt text][image13]
+![alt text][image14]
+![alt text][image15]
+![alt text][image16]
+![alt text][image17]
+![alt text][image18]
 
 
+### Here the resulting bounding boxes are drawn onto the same six frame in the series:
+![alt text][image19]
+![alt text][image20]
+![alt text][image21]
+![alt text][image22]
+![alt text][image23]
+![alt text][image24]
 
----
 
 ###Discussion
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Here I'll talk about the approach I took, what techniques I used, what worked and why, where the pipeline might fail and how I might improve it if I were going to pursue this project further.  
-
+Rerunning/reprocessing the entire video took some creativity. Notebooks would routinely timeout while processing. I learned that they notebooks can be run with a parameter to override the default 60 seconds timeout. Further the subclip() method worked well for quickly iterating over small clips, and then only running the final 2-split subclips one time.
