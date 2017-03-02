@@ -19,7 +19,13 @@ The goals / steps of this project are the following:
 [image2]: ./output_for_readme/raw-non-vehicles-Extras-extra2126.png "raw not-car image"
 [image3]: ./output_for_readme/HOG-vehicles-GTI_MiddleClose-image0425.png "car HOG image"
 [image4]: ./output_for_readme/HOG-non-vehicles-Extras-extra2126.png "not-car HOG image"
-[image5]: ./output_for_readme/processed_sobelx_sobely_image.jpg "sobelx and sobely outputs"
+[image5]: ./output_for_readme/bounding_boxes_test1.jpg "bounding boxes test_images/test1.jpg"
+[image6]: ./output_for_readme/bounding_boxes_test2.jpg "bounding boxes test_images/test2.jpg"
+[image7]: ./output_for_readme/bounding_boxes_test3.jpg "bounding boxes test_images/test3.jpg"
+[image8]: ./output_for_readme/bounding_boxes_test4.jpg "bounding boxes test_images/test4.jpg"
+[image9]: ./output_for_readme/bounding_boxes_test5.jpg "bounding boxes test_images/test5.jpg"
+[image10]: ./output_for_readme/bounding_boxes_test6.jpg "bounding boxes test_images/test6.jpg"
+
 [image6]: ./output_for_readme/processed_sobelmag_sobeldir_image.jpg "sobelmag and sobeldir outputs"
 [image7]: ./output_for_readme/sample_lane_line_pixels.jpg "sample_lane_line_pixels"
 [image8]: ./output_for_readme/processed_Frames_frame0006.jpg "frame006"
@@ -54,26 +60,32 @@ Code cell 7 extracts the car and not-car features from the data and makes those 
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 
-I tried various combinations of parameters and...
+Its hard to tell just from the HOG extracted features that they will be useful downstream in actually being able to position the bounding boxes correctly on the region of interest , within a given image. So i settled on some values provided in the lectures and some by back tracking from when an approximate good quality bounding box image was found on the a few of the sample images.
 
 ####3. Describe how (and identify where in your code) you trained a classifier using your selected HOG features (and color features if you used them).
 
-I trained a linear SVM using...
+Code in cell 8 trains the classifer. We first preprocess the data to apply a sklearn.preprocessing.StandardScaler() , then we do a 80/20 train/test random selection, then apply sklearn.svm.LinearSVC() to the data, and finally store the resulting classifer ina pickle.   
 
 ###Sliding Window Search
 
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-I decided to search random window positions at random scales all over the image and came up with this (ok just kidding I didn't actually ;):
+The code for this step is contained in the code cells 9 and 10 of the  notebook.
 
-![alt text][image3]
+Code in cell 9 setups several helper functions. The most important of these is the search_windows(0 function. This function takes an image, a list of window objects, a classifer and sevarl other parameters, and returns an array of positive detection windows. the list of window objects parameter is typically supplied by another helper function , slide_window(). This second function takes an imge, and certain bounds such as x_start/stop and xy_overlap etc to return an array of windows covering the region of interest in the single image provided. Scales and overlap were selected with some trial and error and also based on some slack channel and class viedos.  
+Code in cell 10, essentailly does first pass run of the earlier tentative parameters on a single image.  
 
 ####2. Show some examples of test images to demonstrate how your pipeline is working.  What did you do to optimize the performance of your classifier?
 
-Ultimately I searched on two scales using YCrCb 3-channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
+Ultimately I searched on two scales using YCrCb 'ALL' channel HOG features plus spatially binned color and histograms of color in the feature vector, which provided a nice result.  Here are some example images:
 
-![alt text][image4]
----
+![alt text][image5]  
+![alt text][image6]  
+![alt text][image7]  
+![alt text][image8]  
+![alt text][image9]  
+![alt text][image10]  
+
 
 ### Video Implementation
 
