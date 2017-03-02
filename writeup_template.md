@@ -46,11 +46,10 @@ Code cell 3 - simply displays some random car and not-car image.
 ![alt text][image1]  
 ![alt text][image2]  
 Code cell 4 sets up some tentative HOG and other related parameters.  
-Code cell 5 establishes a set of helper functions for feature extraction.  
+Code cell 5 establishes a set of helper functions for feature extraction. First get_hog_features() is setup as a helper function that internally wraps  skimage.feature.hog() which in turns relies on the HOG parameters established in cell 4. Subsequently extract_features() internally calls get_hog_features() and depending on whether only a specific channel is passed in or 'ALL' is passed in, returns appropriate features.  
 Code cell 6 displays the HOG images of the same random car and not-car images shown earlier.  
 ![alt text][image3]  
 ![alt text][image4]   
-
 Code cell 7 extracts the car and not-car features from the data and makes those globally available to the rest of the notebook.  
 
 ####2. Explain how you settled on your final choice of HOG parameters.
