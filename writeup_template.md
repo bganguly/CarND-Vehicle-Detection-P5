@@ -88,7 +88,9 @@ Ultimately I searched on two scales using YCrCb 'ALL' channel HOG features plus 
 ### Video Implementation
 
 ####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
-Here's a [link to my video result](./project_video.mp4)
+Here's a [link to my video result](./movie.mov) . 
+Here's the corresponding youtube link - https://youtu.be/axs4TrsXmuE
+Normally this would have been an mp4 file. However i found that running the 1261 or so frames of the video on an AWS gpu instance takes upwards of 2 hour 30 minutes or so. So i use VideoClip.subclip() to split into two clips of roughly equl size and run two jupyter notebooks in parallel. This eventually did not have much benefit as the single notebook normally took about 7.3 seconds to process each frame, and with two notebooks running, the time for each shot upto about 13.3 seconds. There was perhaps a sving of 20 minutes or so. More importanlty when the two processed mp4 subclips were downloaed to local mac, and then joined together using quicktime, the resulting video can only be saved as .mov file.
 
 
 ####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
