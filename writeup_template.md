@@ -101,8 +101,8 @@ Ultimately I searched on two scales using YCrCb 'ALL' channel HOG features plus 
 
 ####1. Provide a link to your final video output.  Your pipeline should perform reasonably well on the entire project video (somewhat wobbly or unstable bounding boxes are ok as long as you are identifying the vehicles most of the time with minimal false positives.)
 Here's a [link to my video result](./movie.mov)    
-Here's the corresponding youtube link - https://youtu.be/axs4TrsXmuE   
-Normally this would have been an mp4 file. However i found that running the 1261 or so frames of the video on an AWS gpu instance takes upwards of 2 hour 30 minutes or so. So i use VideoClip.subclip() to split into two clips of roughly equl size and run two jupyter notebooks in parallel. This eventually did not have much benefit as the single notebook normally took about 7.3 seconds to process each frame, and with two notebooks running, the time for each shot upto about 13.3 seconds. There was perhaps a sving of 20 minutes or so. More importanlty when the two processed mp4 subclips were downloaed to local mac, and then joined together using quicktime, the resulting video can only be saved as .mov file.
+Here's the corresponding youtube link - https://www.youtube.com/watch?v=BLQsqb4OVlQ   
+Normally this would have been an mp4 file. However i found that running the 1261 or so frames of the video on an AWS gpu instance takes upwards of 2 hour 30 minutes or so. So i use VideoClip.subclip() to split into four clips of roughly equl size and run four AWS instances in parallel, taking care to use the same classifer.pickle file in each instance. This eventually did have some benefit as the single notebook normally took about 7.3 seconds to process each frame, and with four notebooks running, the time for overall run was about half hour. Subsequently, when the four processed mp4 subclips were downloaed to local mac, and then joined together using quicktime, the resulting video can only be saved as .mov file.
 
 ####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
@@ -114,6 +114,11 @@ Here's an example result showing the heatmap from test_images/test6.jpg:
 ![alt text][image11]  
 ![alt text][image12]  
 
+####3. A method, such as requiring that a detection be found at or near the same position in several subsequent frames, (could be a heat map showing the location of repeat detections) is implemented as a means of rejecting false positives, and this demonstrably reduces the number of false positives. Same or similar method used to draw bounding boxes (or circles, cubes, etc.) around high-confidence detections where multiple overlapping detections occur.
+
+The code for this is cell 18, and its wiring into the video pipleline is in cell 23.
+
+As advised i have uses a deque with maxlen=5, to store the average of the last preceeding 5 heatmaps. In the early frame, where the frames < 5 have not yet been processed, the average is the sum of whatever frames we have processed so far.
 
 ### Here are six frames and their corresponding heatmaps:
 ![alt text][image13]
@@ -137,4 +142,5 @@ Here's an example result showing the heatmap from test_images/test6.jpg:
 
 ####1. Briefly discuss any problems / issues you faced in your implementation of this project.  Where will your pipeline likely fail?  What could you do to make it more robust?
 
-Rerunning/reprocessing the entire video took some creativity. Notebooks would routinely timeout while processing. I learned that they notebooks can be run with a parameter to override the default 60 seconds timeout. Further the subclip() method worked well for quickly iterating over small clips, and then only running the final 2-split subclips one time.
+Rerunning/reprocessing the entire video took some creativity. Notebooks would routinely timeout while processing. I learned that they notebooks can be run with a parameter to override the default 60 seconds timeout. Further the subclip() method worked well for quickly iterating over small clips, and then only running the final 4-split subclips one time.
+In addition, just as an iterative proecess , i dropped the overalp to 60% from the original 75%. This appears to have led to a situation where , especially for the white car, there briefly appears two bounded rectangles over the same car. Perhaps with a greater overlap, i could have avoided it.
